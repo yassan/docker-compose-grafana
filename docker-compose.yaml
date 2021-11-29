@@ -1,0 +1,44 @@
+version: '3'
+services:
+  grafana:
+    build:
+      context: .
+      dockerfile: Dockerfile.grafana
+      args:
+        grafana_port: "3000"
+    #   HTTP_PROXY: $HTTP_PROXY
+    #   HTTPS_PROXY: $HTTPS_PROXY
+    #   NO_PROXY: $NO_PROXY
+    image: "grafana-provisioning-grafana:test"
+    container_name: "grafana"
+    restart: unless-stopped
+    user: grafana
+    volumes:
+      - "./gf-data:/var/lib/grafana"
+    env_file:
+      - "grafana.env"
+    ports:
+      - "3000:3000"
+    networks:
+      - web
+
+  renderer:
+    build:
+      context: .
+      dockerfile: Dockerfile.renderer
+      args:
+        renderer_port: "8081"
+    image: "grafana-provisioning-renderer:test"
+    container_name: "renderer"
+    env_file:
+      - "./renderer.env"
+    depends_on:
+      - grafana
+    ports:
+      - "8081:8081"
+    networks:
+      - web
+
+networks:
+  web:
+    driver: bridge

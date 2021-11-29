@@ -1,0 +1,9 @@
+FROM grafana/grafana-image-renderer:latest
+
+ARG HTTP_PROXY
+ARG HTTPS_PROXY
+ARG NO_PROXY
+
+ARG renderer_port
+
+EXPOSE ${renderer_port}

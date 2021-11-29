@@ -1,0 +1,14 @@
+FROM grafana/grafana:8.2.5
+
+USER root
+RUN apk add --no-cache curl
+
+USER grafana
+
+ARG HTTP_PROXY
+ARG HTTPS_PROXY
+ARG NO_PROXY
+
+ARG grafana_port
+
+EXPOSE ${grafana_port}
